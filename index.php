@@ -1,11 +1,25 @@
 <?php
 
 require_once("config.php");
+//carrega um usuario
+//$root = new Usuario();
+//$root->loadbyId(11);
+//echo $root;
 
-$sql = new Sql();
+//Carrega uma lista de usuarios
+//$lista = Usuario::getList();
 
-$usuarios = $sql->select("SELECT * FROM tb_usuarios");
+//echo json_encode($lista);
 
-echo json_encode($usuarios);
+//CARREGA UMA LISTA DE USUARIOS BUSCANDO PELO LOGIN
+
+//$search = Usuario::search("pe");
+//echo json_encode($search);
+
+//CARREGA UM USUARIO IDENTIFICANDO LOGIN E SENHA
+$usuario = new Usuario();
+$usuario->login("guido", "1234567");
+
+echo $usuario;
 
 ?>
