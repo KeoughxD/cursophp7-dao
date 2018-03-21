@@ -30,7 +30,7 @@ class Sql extends PDO{
 		$this->setParams($stmt, $params);
 		$stmt->execute();
 
-		return $stmt; 
+		return $stmt;
 	}
 
 	public function select($rawQuery, $params = array()) : array {

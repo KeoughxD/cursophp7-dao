@@ -47,12 +47,7 @@ class Usuario {
 
 		if(count($results) > 0 ){
 
-			$row = $results[0];
-
-			$this->setIdusuario($row['idusuario']);
-			$this->setDeslogin($row['deslogin']);
-			$this->setDessenha($row['dessenha']);
-			$this->setDtcadastro(new DateTime($row['dtcadastro']));
+			$this->setData($results[0]);
 		}
 	}
 
@@ -66,13 +61,13 @@ class Usuario {
 
 	public static function search($login){ // MÉTODO ESTATICO para Buscar um determinado cadastro com base no nome do login.. por exemplo se tiver um BErnardo e um BEnedito no BD e eu pesquisar por "BE" %BE% irá retornar benedito e bernardo ... 
 
-
 		$sql = new Sql();
 
 		return $sql->select("SELECT * FROM tb_usuarios WHERE deslogin LIKE :SEARCH ORDER BY deslogin", array(
 		  ':SEARCH'=>"%".$login."%"
 
 		));
+
 	}
 
 	public function login($login,$password){ // FUNÇÃO RESPONSÁVEL POR REALIZAR UMA AUTENTICAÇÃO DE LOGIN E SENHA DE UM DETERMINADO USUARIO CADASTRADO NO BANCO DE DADOS.. 
@@ -86,12 +81,7 @@ class Usuario {
 
 		if(count($results) > 0 ){
 
-			$row = $results[0];
-
-			$this->setIdusuario($row['idusuario']);
-			$this->setDeslogin($row['deslogin']);
-			$this->setDessenha($row['dessenha']);
-			$this->setDtcadastro(new DateTime($row['dtcadastro']));
+			$this->setData($results[0]);
 		}	
 		else{
 
@@ -99,6 +89,29 @@ class Usuario {
 
 		}
 
+	}
+
+	public function setData($data){
+
+		$this->setIdusuario($data['idusuario']);
+		$this->setDeslogin($data['deslogin']);
+		$this->setDessenha($data['dessenha']);
+		$this->setDtcadastro(new DateTime($data['dtcadastro']));
+
+	}
+
+	public function insert(){
+
+		$sql = new Sql();
+
+		$results = $sql->select("EXECUTE sp_usuarios_insert(:LOGIN, :PASSWORD)", array(
+			':LOGIN'=>$this->getDeslogin(),
+			':PASSWORD'=>$this->getDessenha()
+		));
+
+		if(count($results) > 0){
+			$this->setData($results[0]);
+		}
 	}
 
 	public function __toString(){
